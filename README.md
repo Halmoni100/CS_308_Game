@@ -1,9 +1,9 @@
 # game
 First project for CompSci 308 Fall 2015
 
-Name:
+Name: Christopher Hong
 
-Date started:
+Date started: 8/27/15
 
 Date finished:
 

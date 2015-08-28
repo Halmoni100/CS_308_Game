@@ -1,0 +1,14 @@
+Genre: Shooting & Aiming game
+Name: Pay Attention Class
+
+Goal:
+
+You are a teacher of a high school teacher class, but many of your students are !  Your objective is to fire pencils from your desk to any sleeping student to wake them up before they all fall asleep.
+
+Basic mechanics:
+
+Throw pencils by adjusting an indicated arrow to aim at the students and space to fire.
+
+Levels:
+
+Basic level only has students that fall asleep.  Advanced level also has moving troublemaker that must be defused within a certain time frame.
