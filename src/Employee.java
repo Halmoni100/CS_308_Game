@@ -5,12 +5,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Employee {
-	private static final double EMPLOYEE_HEIGHT = 50;
+	private static final double EMPLOYEE_HEIGHT = 100;
 	private static final double EMPLOYEE_WIDTH = 100;
-	private static final double HIT_BOX_HEIGHT = 25;
+	private static final double HIT_BOX_HEIGHT = 50;
 	private static final double HIT_BOX_WIDTH = 50;
 	private static final double HIT_BOX_X_COORD = 25;
-	private static final double HIT_BOX_Y_COORD = 12.5;
+	private static final double HIT_BOX_Y_COORD = 15;
 	
 	
 	private Group employee;
@@ -31,7 +31,10 @@ public class Employee {
 		employee_img_view.setFitHeight(EMPLOYEE_HEIGHT);
 		awake = true;
 		
-		hit_box = new Rectangle(HIT_BOX_WIDTH, HIT_BOX_HEIGHT, Color.YELLOW);
+		hit_box = new Rectangle(HIT_BOX_WIDTH, HIT_BOX_HEIGHT);
+		hit_box.setFill(Color.TRANSPARENT);
+		hit_box.setStroke(Color.RED);
+		hit_box.setStrokeWidth(2);
 		
 		employee.getChildren().add(employee_img_view);
 		employee.getChildren().add(hit_box);

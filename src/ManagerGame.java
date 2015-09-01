@@ -15,7 +15,7 @@ public class ManagerGame {
 	private static final double BANNER_HEIGHT = 100;
 	private static final double MIN_TIME_UNTIL_NEXT_SLEEP = .2;
 	private static final double MAX_TIME_UNTIL_NEXT_SLEEP = 1;
-	private static final double TIME_GIVEN = 10;
+	private static final double TIME_GIVEN = 60;
 	
 	private Scene myScene;
 	private Manager manager;
@@ -101,25 +101,7 @@ public class ManagerGame {
      */
     public void gameStep (double elapsedTime) {
     	if (!game_over) {
-	    	arrowMvmnt(elapsedTime);
-	    	managerMvmnt(elapsedTime);
-			
-	    	// fire projectile if necessary
-			if (inputs.contains("SPACE")) {
-				if (!space_being_pressed) {
-					projectile_list.fireProjectile(manager.getArrowAngle(),
-							manager_grp.getLayoutX(), manager_grp.getLayoutY());
-					space_being_pressed = true;
-				}
-			} else {
-				space_being_pressed = false;
-			}
-			
-			projectile_list.updateProjectiles(elapsedTime);
-			
-			total_time_left -= elapsedTime;
-	
-			if (remainingTimeUntilNextSleep <= 0) {
+    		if (remainingTimeUntilNextSleep <= 0) {
 				// make one worker sleep
 				boolean allAsleep = employee_list.makeEmployeeSleep();
 				if (allAsleep) {
@@ -127,27 +109,48 @@ public class ManagerGame {
 					game_over = true;
 					System.out.println("Game Lost");
 				}
-				// set next time interval until next sleep
-				double randNum = rand_num_gen.nextDouble();
-				double interval = 
-						MAX_TIME_UNTIL_NEXT_SLEEP - MIN_TIME_UNTIL_NEXT_SLEEP;
-				remainingTimeUntilNextSleep = 
-						MIN_TIME_UNTIL_NEXT_SLEEP + randNum * interval;
+				if(!game_over) {
+					// set next time interval until next sleep
+					double randNum = rand_num_gen.nextDouble();
+					double interval = 
+							MAX_TIME_UNTIL_NEXT_SLEEP - MIN_TIME_UNTIL_NEXT_SLEEP;
+					remainingTimeUntilNextSleep = 
+							MIN_TIME_UNTIL_NEXT_SLEEP + randNum * interval;
+				}
 			}
 			remainingTimeUntilNextSleep -= elapsedTime;
 			
-			// Check for collisions
-			projectile_list.checkCollisions(employee_list);
-	
-			// update timer
-			int seconds_left = ((int) total_time_left / 1) + 1;
-			if (seconds_left <= 0) {
-				timer_label.setText("0");
-				System.out.println("Game Won!");
-				game_over = true;
+			if (!game_over) {
+				// Check for collisions
+				projectile_list.checkCollisions(employee_list);
+		    	arrowMvmnt(elapsedTime);
+		    	managerMvmnt(elapsedTime);
+				
+		    	// fire projectile if necessary
+				if (inputs.contains("SPACE")) {
+					if (!space_being_pressed) {
+						projectile_list.fireProjectile(manager.getArrowAngle(),
+								manager_grp.getLayoutX(), manager_grp.getLayoutY());
+						space_being_pressed = true;
+					}
+				} else {
+					space_being_pressed = false;
+				}
+				
+				projectile_list.updateProjectiles(elapsedTime);
+				
+				total_time_left -= elapsedTime;
+				
+				// update timer
+				int seconds_left = ((int) total_time_left / 1) + 1;
+				if (seconds_left <= 0) {
+					timer_label.setText("0");
+					System.out.println("Game Won!");
+					game_over = true;
+				}
+				else	
+					timer_label.setText(Integer.toString(seconds_left));
 			}
-			else	
-				timer_label.setText(Integer.toString(seconds_left));
     	}
     }
     
