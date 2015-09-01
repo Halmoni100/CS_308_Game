@@ -5,12 +5,12 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Employee {
-	private static final double EMPLOYEE_HEIGHT = 100;
-	private static final double EMPLOYEE_WIDTH = 100;
-	private static final double HIT_BOX_HEIGHT = 50;
-	private static final double HIT_BOX_WIDTH = 50;
-	private static final double HIT_BOX_X_COORD = 25;
-	private static final double HIT_BOX_Y_COORD = 15;
+	private final double EMPLOYEE_HEIGHT = 100;
+	private final double EMPLOYEE_WIDTH = 100;
+	private final double HIT_BOX_HEIGHT = 50;
+	private final double HIT_BOX_WIDTH = 50;
+	private final double HIT_BOX_X_COORD = 25;
+	private final double HIT_BOX_Y_COORD = 15;
 	
 	
 	private Group employee;

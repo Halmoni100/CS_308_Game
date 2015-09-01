@@ -4,15 +4,20 @@ import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
 
 public class Manager {
+	/** this is public so that Projectile as well as
+	 *  ManagerGame (for advanced movement of manager)
+	 *  can use the size of the manager
+	 */
 	public static final double MANAGER_GROUP_LENGTH = 200;
 	
-	private static final String MANAGER_IMG_FILE_NAME = "manager.png";
-	private static final String ARROW_IMG_FILE_NAME = "arrow.png";
-	private static final double MANAGER_HEIGHT = 100;
-	private static final double MANAGER_WIDTH = 50;
-	private static final double ARROW_HEIGHT = 20;
-	private static final double ARROW_WIDTH = 20;
-	private static final double ARROW_VELOCITY = 150;
+	private final String MANAGER_IMG_FILE_NAME = "manager.png";
+	private final String ARROW_IMG_FILE_NAME = "arrow.png";
+	private final double MANAGER_HEIGHT = 100;
+	private final double MANAGER_WIDTH = 50;
+	private final double ARROW_HEIGHT = 20;
+	private final double ARROW_WIDTH = 20;
+	
+	private double ARROW_VELOCITY = 150;
 	
 	private Group manager;
 	private ImageView manager_img_view;

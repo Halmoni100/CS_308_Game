@@ -38,7 +38,7 @@ public class Main extends Application {
         
         // sets the game's loop
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
-                                      e -> myGame.gameStep(SECOND_DELAY));
+                                      e -> myGame.step(SECOND_DELAY));
         Timeline animation = new Timeline();
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);

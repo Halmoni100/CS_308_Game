@@ -5,12 +5,12 @@ import javafx.scene.Group;
 import javafx.scene.image.Image;
 
 public class EmployeeList {
-	private static final String EMPLOYEE_AWAKE_IMG_FILE_NAME = "worker_awake.png";
-	private static final String EMPLOYEE_ASLEEP_IMG_FILE_NAME = "worker_asleep.png";
-	private static final double[] EMPLOYEE_X_COORDS =
-		{0, 200, 400, 600, 800, 1000};
-	private static final double[] EMPLOYEE_Y_COORDS =
-		{0, 200, 400, 600};
+	private final String EMPLOYEE_AWAKE_IMG_FILE_NAME = "worker_awake.png";
+	private final String EMPLOYEE_ASLEEP_IMG_FILE_NAME = "worker_asleep.png";
+	private final double[] EMPLOYEE_X_COORDS =
+		{0, 300, 600, 900};
+	private final double[] EMPLOYEE_Y_COORDS =
+		{0, 300, 600};
 	
 	private Group employee_list_group;
 	private ArrayList<Employee> employees;
@@ -30,27 +30,11 @@ public class EmployeeList {
 		// create employees
 		int num_x_coords = EMPLOYEE_X_COORDS.length;
 		int num_y_coords = EMPLOYEE_Y_COORDS.length;
-		// make top row
-		double y_coord = EMPLOYEE_Y_COORDS[0];
+		// make a grid of employees
 		for (double x_coord: EMPLOYEE_X_COORDS) {
-			addEmployee(x_coord, y_coord);
-		}
-		// make bottom row
-		y_coord = EMPLOYEE_Y_COORDS[num_y_coords - 1];
-		for (double x_coord: EMPLOYEE_X_COORDS) {
-			addEmployee(x_coord, y_coord);
-		}
-		// make left column
-		double x_coord = EMPLOYEE_X_COORDS[0];
-		for (int i = 1; i < num_y_coords - 1; i++) {
-			y_coord = EMPLOYEE_Y_COORDS[i];
-			addEmployee(x_coord, y_coord);
-		}
-		// make right column
-		x_coord = EMPLOYEE_X_COORDS[num_x_coords - 1];
-		for (int i = 1; i < num_y_coords - 1; i++) {
-			y_coord = EMPLOYEE_Y_COORDS[i];
-			addEmployee(x_coord, y_coord);
+			for (double y_coord: EMPLOYEE_Y_COORDS) {
+				addEmployee(x_coord, y_coord);
+			}
 		}
 		
 		num_employees = employees.size();
