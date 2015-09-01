@@ -13,6 +13,10 @@ public class ManagerGame {
 	public static final double MANAGER_VELOCITY = 200;
 	
 	private static final double BANNER_HEIGHT = 100;
+	private static final double TIMER_TEXT_X_POS = 30;
+	private static final double TIMER_TEXT_Y_POS = 30;
+	private static final double RESULT_TEXT_X_POS = 300;
+	private static final double RESULT_TEXT_Y_POS = 30;
 	private static final double MIN_TIME_UNTIL_NEXT_SLEEP = .2;
 	private static final double MAX_TIME_UNTIL_NEXT_SLEEP = 1;
 	private static final double TIME_GIVEN = 60;
@@ -27,7 +31,9 @@ public class ManagerGame {
 	private double total_time_left;
 	private double remainingTimeUntilNextSleep;
 	private Random rand_num_gen;
+	private Group banner_grp;
 	private Text timer_label;
+	private Text game_result_label;
 	
 	private boolean game_over;
 	private boolean game_won;
@@ -81,11 +87,18 @@ public class ManagerGame {
 
 		total_time_left = TIME_GIVEN;
 		// Set up timer label
-        timer_label = new Text(30, 30, "60");
+        timer_label = new Text(TIMER_TEXT_X_POS, TIMER_TEXT_Y_POS, "60");
         Font f = Font.font("Helvetica", FontWeight.BOLD, 24);
         timer_label.setFont(f);
-        // Attach timer to root
-        root.getChildren().add(timer_label);
+        // Set up game result label
+        game_result_label = new Text(RESULT_TEXT_X_POS, RESULT_TEXT_Y_POS, "");
+        game_result_label.setFont(f);
+        // Attach timer and game result labels to banner group
+        banner_grp = new Group();
+        banner_grp.getChildren().add(timer_label);
+        banner_grp.getChildren().add(game_result_label);
+        // Attach banner group to root
+        root.getChildren().add(banner_grp);
         
 		remainingTimeUntilNextSleep = 2;
 		rand_num_gen = new Random();
@@ -106,8 +119,8 @@ public class ManagerGame {
 				boolean allAsleep = employee_list.makeEmployeeSleep();
 				if (allAsleep) {
 					game_won = false;
+					game_result_label.setText("Game Lost");
 					game_over = true;
-					System.out.println("Game Lost");
 				}
 				if(!game_over) {
 					// set next time interval until next sleep
@@ -144,12 +157,15 @@ public class ManagerGame {
 				// update timer
 				int seconds_left = ((int) total_time_left / 1) + 1;
 				if (seconds_left <= 0) {
-					timer_label.setText("0");
-					System.out.println("Game Won!");
+					timer_label.setText("Time left: 0s");
+					game_result_label.setText("Game won!");
 					game_over = true;
 				}
-				else	
-					timer_label.setText(Integer.toString(seconds_left));
+				else {
+					String timer_text =
+							"Time left: " + Integer.toString(seconds_left) + "s";
+					timer_label.setText(timer_text);
+				}
 			}
     	}
     }
