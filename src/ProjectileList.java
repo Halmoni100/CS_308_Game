@@ -40,6 +40,14 @@ public class ProjectileList {
 		projectile_group.getChildren().add(p.getProjectileCircle());
 	}
 	
+	public void clearProjectiles() {
+		int current_num_projectiles = num_projectiles;
+		for (int i = 0; i < current_num_projectiles; i++) {
+			Projectile p = projectiles.get(0);
+			removeProjectile(p);
+		}	
+	}
+	
 	public void updateProjectiles(double elapsedTime) {
 		int num_projectiles = projectiles.size();
 		int currentIndex = 0;

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,6 +19,13 @@ public class Manager {
 	private final double ARROW_HEIGHT = 20;
 	private final double ARROW_WIDTH = 20;
 	
+	// manager mvmnt parameters, normal mode
+	private double MANAGER_VELOCITY = 200;
+	// manager mvmnt parameters, advanced mode
+	private double manager_velocity_x = 0;
+	private double manager_velocity_y = 0;
+	private double MANAGER_ACCELERATION = 500;
+	// arrow
 	private double ARROW_VELOCITY = 150;
 	
 	private Group manager;
@@ -56,13 +65,94 @@ public class Manager {
 		return manager;
 	}
 	
-	public void moveArrowCW(double elapsedTime) {
+	public double getArrowAngle() {
+		return arrow_angle;
+	}
+	
+    public void moveManager(double elapsedTime, ArrayList<String> inputs) {
+    	double manager_x_pos = manager.getLayoutX();
+    	double manager_y_pos = manager.getLayoutY();
+    	double translate_dist = elapsedTime * MANAGER_VELOCITY;
+    	double translate_x = 0;
+    	double translate_y = 0;
+    	for (String i: inputs) {
+    		switch(i) {
+    			case "W": // up
+    				translate_y -= translate_dist;
+    				break;
+    			case "A": // left
+    				translate_x -= translate_dist;
+    				break;
+    			case "S": // down
+    				translate_y += translate_dist;
+    				break;
+    			case "D": // right
+    				translate_x += translate_dist;
+    				break;
+    		}
+    	}
+    	manager.setLayoutX(manager_x_pos + translate_x);
+		manager.setLayoutY(manager_y_pos + translate_y);
+    }
+    
+    public void moveManagerAdvanced(double elapsedTime,
+    		ArrayList<String> inputs, double game_screen_width,
+    		double game_screen_height) {
+    	double manager_x_pos = manager.getLayoutX();
+    	double manager_y_pos = manager.getLayoutY();
+    	double delta_velocity = elapsedTime * MANAGER_ACCELERATION;
+    	// change velocity based on input
+    	for (String i: inputs) {
+    		switch(i) {
+    			case "W": // up
+    				manager_velocity_y -= delta_velocity;
+    				break;
+    			case "A": // left
+    				manager_velocity_x -= delta_velocity;
+    				break;
+    			case "S": // down
+    				manager_velocity_y += delta_velocity;
+    				break;
+    			case "D": // right
+    				manager_velocity_x += delta_velocity;
+    				break;
+    		}
+    	}
+    	// check for collision with edge
+    	if (manager_x_pos <= 0 || manager_x_pos + Manager.MANAGER_GROUP_LENGTH
+    			>= game_screen_width) { // left and right edge
+    		manager_velocity_x = -manager_velocity_x;
+    	}
+    	if (manager_y_pos <= 0 || manager_y_pos + Manager.MANAGER_GROUP_LENGTH
+    			>= game_screen_height) { // top and bottom edge
+    		manager_velocity_y = -manager_velocity_y;
+    	}
+
+    	double translate_x = elapsedTime * manager_velocity_x;
+    	double translate_y = elapsedTime * manager_velocity_y;
+    	manager.setLayoutX(manager_x_pos + translate_x);
+		manager.setLayoutY(manager_y_pos + translate_y);
+    }
+    
+    public void moveArrow(double elapsedTime, ArrayList<String> inputs) {
+    	if (!(inputs.contains("LEFT") && inputs.contains("RIGHT"))) {
+    		if (inputs.contains("LEFT")) {
+    			moveArrowCCW(elapsedTime);
+    		}
+    		if (inputs.contains("RIGHT")) {
+    			moveArrowCW(elapsedTime);
+    		}
+    	}
+    }
+    
+	
+	private void moveArrowCW(double elapsedTime) {
 		arrow_angle += ARROW_VELOCITY * elapsedTime;
 		arrow_angle = arrow_angle % 360;
 		updateArrow();
 	}
 	
-	public void moveArrowCCW(double elapsedTime) {
+	private void moveArrowCCW(double elapsedTime) {
 		arrow_angle -= ARROW_VELOCITY * elapsedTime;
 		arrow_angle = arrow_angle % 360;
 		// keep angle positive
@@ -70,10 +160,6 @@ public class Manager {
 			arrow_angle = 360 + arrow_angle;
 		}
 		updateArrow();
-	}
-	
-	public double getArrowAngle() {
-		return arrow_angle;
 	}
 	
 	private Image getImage(String file_name) {

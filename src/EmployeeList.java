@@ -26,10 +26,7 @@ public class EmployeeList {
 		employees = new ArrayList<Employee>();
 		employee_awake_img = getImage(EMPLOYEE_AWAKE_IMG_FILE_NAME);
 		employee_asleep_img = getImage(EMPLOYEE_ASLEEP_IMG_FILE_NAME);
-		
-		// create employees
-		int num_x_coords = EMPLOYEE_X_COORDS.length;
-		int num_y_coords = EMPLOYEE_Y_COORDS.length;
+
 		// make a grid of employees
 		for (double x_coord: EMPLOYEE_X_COORDS) {
 			for (double y_coord: EMPLOYEE_Y_COORDS) {
@@ -81,6 +78,15 @@ public class EmployeeList {
 			employees.get(index).wakeEmployee();
 			awake_employees.add(index);
 		}	
+	}
+	
+	public void wakeAllEmployees() {
+		for (int i = 0; i < num_employees; i++) {
+			if (!awake_employees.contains(i)) {
+				employees.get(i).wakeEmployee();
+				awake_employees.add(i);
+			}
+		}
 	}
 	
 	private void addEmployee(double x_coord, double y_coord) {
