@@ -23,21 +23,28 @@ public class ManagerGame {
 
 	private final String SPLASH_SCREEN_IMG_FILE_NAME = "splash_screen.png";
 	private final String RESET_SCREEN_IMG_FILE_NAME = "reset_screen.png";
-	private final String BACKGROUND_IMG_FILE_NAME = "background.jpg";
-	private final double BANNER_HEIGHT = 100;
+	private final String BACKGROUND_IMG_FILE_NAME = "background_linoleum.png";
+	private final String BANNER_BACKGROUND_IMG_FILE_NAME = "banner_background.png";
+	private final double MODE_TEXT_X_POS = 100;
+	private final double MODE_TEXT_Y_POS = 700;
+	private final double BANNER_HEIGHT = 200;
 	private final double TIMER_TEXT_X_POS = 30;
 	private final double TIMER_TEXT_Y_POS = 30;
-	private final double RESULT_TEXT_X_POS = 300;
+	private final double RESULT_TEXT_X_POS = 250;
 	private final double RESULT_TEXT_Y_POS = 30;
+	private final double cheat_label_X_POS = 500;
+	private final double cheat_label_Y_POS = 30;
 	private final double MANAGER_START_X = 30;
 	private final double MANAGER_START_Y = 30;
+	private final double CHEAT_LABEL_TIME = 2;
 	
 	private double MIN_TIME_UNTIL_NEXT_SLEEP = 1;
 	private double MAX_TIME_UNTIL_NEXT_SLEEP = 3;
-	private double TIME_GIVEN = 10;
+	private double TIME_GIVEN = 50;
 	
-	private ImageView splash_screen_img_view;
-	private ImageView reset_screen_img_view;
+	private Group splash_screen_grp;
+	private Group reset_screen_grp;
+	private Text mode_label;
 	private Group root;
 	private Group game_root;
 	private Scene myScene;
@@ -54,10 +61,14 @@ public class ManagerGame {
 	private Group banner_grp;
 	private Text timer_label;
 	private Text game_result_label;
+	private Text cheat_label;
+	private double cheat_label_time_left;
 	
+	private boolean manager_mvmnt_advanced;
 	private boolean game_started;
 	private boolean game_over;
 	private boolean reset_mode;
+	private boolean cheat_label_activated;
 	
 	private ArrayList<String> inputs;
 	
@@ -74,12 +85,20 @@ public class ManagerGame {
     	
         root = new Group();
         
+        manager_mvmnt_advanced = false;
         // Attach splash screen
  		Image splash_screen_img = getImage(SPLASH_SCREEN_IMG_FILE_NAME);
- 		splash_screen_img_view = new ImageView(splash_screen_img);
- 		splash_screen_img_view.setFitHeight(height);
+ 		ImageView splash_screen_img_view = new ImageView(splash_screen_img);
+ 		splash_screen_img_view.setFitHeight(height + BANNER_HEIGHT);
  		splash_screen_img_view.setFitWidth(width);
- 		root.getChildren().add(splash_screen_img_view);
+ 		splash_screen_grp = new Group();
+ 		mode_label = new Text(MODE_TEXT_X_POS, MODE_TEXT_Y_POS,
+ 				"Movement Mode (Press M to change): Basic");
+ 		Font f = Font.font("Helvetica", FontWeight.BOLD, 24);
+ 		mode_label.setFont(f);
+ 		splash_screen_grp.getChildren().add(splash_screen_img_view);
+ 		splash_screen_grp.getChildren().add(mode_label);
+ 		root.getChildren().add(splash_screen_grp);
  		
         game_root = new Group();
         myScene = new Scene(root, game_screen_width,
@@ -121,28 +140,39 @@ public class ManagerGame {
 		});
 
         timer_label = new Text(TIMER_TEXT_X_POS, TIMER_TEXT_Y_POS, "");
-        Font f = Font.font("Helvetica", FontWeight.BOLD, 24);
         timer_label.setFont(f);
 
         game_result_label = new Text(RESULT_TEXT_X_POS, RESULT_TEXT_Y_POS, "");
         game_result_label.setFont(f);
+        cheat_label = new Text(cheat_label_X_POS, cheat_label_Y_POS, "");
+        cheat_label.setFont(f);
 
+        Image banner_background_img = getImage(BANNER_BACKGROUND_IMG_FILE_NAME);
+        ImageView banner_background_img_view =
+        		new ImageView(banner_background_img);
+        banner_background_img_view.setFitWidth(width);
+        banner_background_img_view.setFitHeight(BANNER_HEIGHT);
         banner_grp = new Group();
+        banner_grp.getChildren().add(banner_background_img_view);
         banner_grp.getChildren().add(timer_label);
         banner_grp.getChildren().add(game_result_label);
+        banner_grp.getChildren().add(cheat_label);
         game_root.getChildren().add(banner_grp);
 
 		rand_num_gen = new Random();
 
 		// Set up reset screen
 		Image reset_screen_img = getImage(RESET_SCREEN_IMG_FILE_NAME);
-		reset_screen_img_view = new ImageView(reset_screen_img);
-		reset_screen_img_view.setFitHeight(height);
+		ImageView reset_screen_img_view = new ImageView(reset_screen_img);
+		reset_screen_img_view.setFitHeight(height + BANNER_HEIGHT);
 		reset_screen_img_view.setFitWidth(width);
+		reset_screen_grp = new Group();
+		reset_screen_grp.getChildren().add(reset_screen_img_view);
 		
 		keys_being_pressed = new ArrayList<String>();
 		setupGame();
 		reset_mode = false;
+		cheat_label_activated = false;
 
         return myScene;
     }
@@ -163,32 +193,61 @@ public class ManagerGame {
     	projectile_list.clearProjectiles();
     	manager_grp.setLayoutX(MANAGER_START_X);
         manager_grp.setLayoutY(MANAGER_START_Y);
+        game_result_label.setText("");
+        cheat_label.setText("");
     }
     
     /**
      * Change properties of shapes to animate them
      */
     public void step (double elapsedTime) {
-    	
     	if (!game_started) {
     		if (keyPressed("ENTER")) {
     			if (reset_mode) {
-    				root.getChildren().remove(reset_screen_img_view);
+    				root.getChildren().remove(reset_screen_grp);
     				reset_mode = false;
     			} else {
-    				root.getChildren().remove(splash_screen_img_view);
+    				splash_screen_grp.getChildren().remove(mode_label);
+    				reset_screen_grp.getChildren().add(mode_label);
+    				root.getChildren().remove(splash_screen_grp);
     			}
     			root.getChildren().add(game_root);
     			game_started = true;
+    		} else if (keyPressed("M")) {
+    			manager_mvmnt_advanced = !manager_mvmnt_advanced;
+    			if (!manager_mvmnt_advanced) {
+    				mode_label.setText("Movement Mode (Press M to change): Basic");
+    			} else {
+    				mode_label.setText("Movement Mode (Press M to change): Advanced");
+    			}
     		}
     	} else {
     		if (keyPressed("R")) {
     			reset_mode = true;
-    			game_result_label.setText("");
     			root.getChildren().remove(game_root);
-    			root.getChildren().add(reset_screen_img_view);
+    			root.getChildren().add(reset_screen_grp);
     			resetGame();
     		} else {
+    			if (keyPressed("P")) {
+    				employee_list.wakeAllEmployees();
+    				cheat_label_activated = true;
+    				cheat_label_time_left = CHEAT_LABEL_TIME;
+    				cheat_label.setText("Cheat 'P' used: All employees wakened");
+    			}
+    			if (keyPressed("O")) {
+    				employee_list.makeMostFallAsleep();
+    				cheat_label_activated = true;
+    				cheat_label_time_left = CHEAT_LABEL_TIME;
+    				cheat_label.setText("Cheat 'O' used: Most employees sent to sleep");
+    			}
+    			if (cheat_label_activated) {
+    				if (cheat_label_time_left <= 0) {
+    					cheat_label_activated = false;
+    					cheat_label.setText("");
+    				} else {
+    					cheat_label_time_left -= elapsedTime;
+    				}
+    			}
     			doGameStep(elapsedTime);
     		}
     	}
@@ -221,7 +280,12 @@ public class ManagerGame {
 				
 				// Update manager
 		    	manager.moveArrow(elapsedTime, inputs);
-		    	manager.moveManager(elapsedTime, inputs);
+		    	if (!manager_mvmnt_advanced) {
+		    		manager.moveManager(elapsedTime, inputs);
+		    	} else {
+		    		manager.moveManagerAdvanced(elapsedTime, inputs,
+		    				game_screen_width, game_screen_height);
+		    	}
 				
 		    	// fire projectile if necessary
 		    	if (keyPressed("SPACE")) {

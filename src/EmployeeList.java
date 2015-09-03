@@ -8,9 +8,9 @@ public class EmployeeList {
 	private final String EMPLOYEE_AWAKE_IMG_FILE_NAME = "worker_awake.png";
 	private final String EMPLOYEE_ASLEEP_IMG_FILE_NAME = "worker_asleep.png";
 	private final double[] EMPLOYEE_X_COORDS =
-		{0, 300, 600, 900};
+		{0, 250, 500, 750, 1000};
 	private final double[] EMPLOYEE_Y_COORDS =
-		{0, 300, 600};
+		{0, 250, 500};
 	
 	private Group employee_list_group;
 	private ArrayList<Employee> employees;
@@ -56,12 +56,11 @@ public class EmployeeList {
 		return num_employees;
 	}
 	
-	// return true if all asleep
+	// return true if all asleep except 1
 	public boolean makeEmployeeSleep() {
-		int num_awake = awake_employees.size();
-		if (num_awake == 0)
-			return true;
-		int pick_index = rand_num_gen.nextInt(num_awake);
+		int prev_num_awake = awake_employees.size();
+
+		int pick_index = rand_num_gen.nextInt(prev_num_awake);
 		int employee_index = awake_employees.get(pick_index);
 		
 		Employee e = employees.get(employee_index);
@@ -70,7 +69,22 @@ public class EmployeeList {
 			System.out.println("Error");
 		
 		awake_employees.remove(pick_index);
+		
+		int curr_num_awake = awake_employees.size();
+		if (curr_num_awake <= 1)
+			return true;
+		
 		return false;
+	}
+	
+	// keep only two awake
+	public void makeMostFallAsleep() {
+		int num_awake = awake_employees.size();
+		if (num_awake > 2) {
+			for (int i = num_awake; i > 2; i--) {
+				makeEmployeeSleep();
+			}
+		}
 	}
 	
 	public void wakeEmployee(int index) {

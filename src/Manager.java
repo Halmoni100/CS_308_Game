@@ -10,23 +10,23 @@ public class Manager {
 	 *  ManagerGame (for advanced movement of manager)
 	 *  can use the size of the manager
 	 */
-	public static final double MANAGER_GROUP_LENGTH = 200;
+	public static final double MANAGER_GROUP_LENGTH = 150;
 	
 	private final String MANAGER_IMG_FILE_NAME = "manager.png";
 	private final String ARROW_IMG_FILE_NAME = "arrow.png";
-	private final double MANAGER_HEIGHT = 100;
-	private final double MANAGER_WIDTH = 50;
+	private final double MANAGER_HEIGHT = 80;
+	private final double MANAGER_WIDTH = 40;
 	private final double ARROW_HEIGHT = 20;
 	private final double ARROW_WIDTH = 20;
 	
 	// manager mvmnt parameters, normal mode
-	private double MANAGER_VELOCITY = 200;
+	private double MANAGER_VELOCITY = 350;
 	// manager mvmnt parameters, advanced mode
 	private double manager_velocity_x = 0;
 	private double manager_velocity_y = 0;
-	private double MANAGER_ACCELERATION = 500;
+	private double MANAGER_ACCELERATION = 600;
 	// arrow
-	private double ARROW_VELOCITY = 150;
+	private double ARROW_VELOCITY = 200;
 	
 	private Group manager;
 	private ImageView manager_img_view;

@@ -4,7 +4,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 
 public class Projectile {
-	public static final double PROJECTILE_RADIUS = 25;
+	public static final double PROJECTILE_RADIUS = 12;
 	
 	private static final double PROJECTILE_VELOCITY = 400;
 	
