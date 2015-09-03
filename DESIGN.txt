@@ -1,14 +1,14 @@
 Genre: Shooting & Aiming game
-Name: Pay Attention Class
+Name: Pay Attention Workers
 
 Goal:
 
-You are a teacher of a high school teacher class, but many of your students are !  Your objective is to fire pencils from your desk to any sleeping student to wake them up before they all fall asleep.
+You are a manager of a company, but many of your workers are sleepy!  Your objective is to fire office scrap to any sleeping worker to wake them up before they all fall asleep.
 
 Basic mechanics:
 
-Throw pencils by adjusting an indicated arrow to aim at the students and space to fire.
+Throw office scrap by adjusting an indicated arrow to aim at the students and space to fire.  Move around manager using WASD keys.
 
 Levels:
 
-Basic level only has students that fall asleep.  Advanced level also has moving troublemaker that must be defused within a certain time frame.
+Basic mode has manager moving at constant velocity.  Advanced level has manager moving with acceleration.

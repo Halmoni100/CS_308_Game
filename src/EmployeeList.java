@@ -1,3 +1,10 @@
+/** Holds all Employees in play screen and arranges them
+ * Assumptions: The x and y coordinates of the Employees
+ * fit the play screen
+ * Dependencies: Image files exist
+ * Returns:
+ */ 
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -21,6 +28,7 @@ public class EmployeeList {
 	
 	private Random rand_num_gen;
 	
+	// initialize grid of employees in Group, all awake
 	public EmployeeList() {
 		employee_list_group = new Group();
 		employees = new ArrayList<Employee>();
@@ -43,11 +51,11 @@ public class EmployeeList {
 		
 		rand_num_gen = new Random();
 	}
-	
+
 	public Group getEmployeeListGroup() {
 		return employee_list_group;
 	}
-	
+
 	public ArrayList<Employee> getEmployees() {
 		return employees;
 	}
@@ -103,6 +111,7 @@ public class EmployeeList {
 		}
 	}
 	
+	// add Employee to group, helps in creation of employees
 	private void addEmployee(double x_coord, double y_coord) {
 		Employee e = new Employee(employee_awake_img, employee_asleep_img);
 		employees.add(e);

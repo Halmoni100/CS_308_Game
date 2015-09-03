@@ -1,5 +1,15 @@
-/** Note to self
- * 	Make method to deal with single key presses!!
+/** 
+ * 	Purpose: ManagerGame encompass all game rules, mechanics,
+ *  and most general elements.
+ *  
+ *  Assumptions: A Main class with Timeline exists
+ *  
+ *  Dependencies: It extends off of the Main
+ *  class, so it has a step function for animating Timeline.
+ *  It also assumes that classes for general elements exist.
+ *  Assumes image files exist.
+ *  
+ * 	Use: Create ManagerGame from Main and use its init and step function
  */
 
 
@@ -79,6 +89,11 @@ public class ManagerGame {
         return TITLE;
     }
     
+    /** Initialize Manager game with game elements
+     * Assumptions: none
+     * Arguments: width and height of playing screen
+     * Returns:
+     */ 
     public Scene init (int width, int height) {
     	game_screen_width = width;
     	game_screen_height = height;
@@ -177,6 +192,11 @@ public class ManagerGame {
         return myScene;
     }
     
+    /** General method to set up variables at start of game
+     * Assumptions: new game being started
+     * Arguments:
+     * Returns:
+     */ 
     private void setupGame() {
 		total_time_left = TIME_GIVEN;
 		updateTimerLabel();
@@ -187,6 +207,11 @@ public class ManagerGame {
 		game_over = false;
     }
     
+    /** Reset variables, clear game screen, reposition Manager
+     * Assumptions: new game being started
+     * Arguments: 
+     * Returns:
+     */ 
     private void resetGame() {
     	setupGame();
     	employee_list.wakeAllEmployees();
@@ -254,6 +279,11 @@ public class ManagerGame {
     	checkKeysBeingPressed();
     }
     
+    /** Do one step of animation in game
+     * Assumptions: game being played
+     * Arguments: elapsed time (one time frame)
+     * Returns:
+     */ 
     private void doGameStep(double elapsedTime) {
     	if (!game_over) {
     		if (remainingTimeUntilNextSleep <= 0) {
@@ -275,10 +305,8 @@ public class ManagerGame {
 			remainingTimeUntilNextSleep -= elapsedTime;
 			
 			if (!game_over) {
-				// Check for collisions
 				projectile_list.checkCollisions(employee_list);
-				
-				// Update manager
+
 		    	manager.moveArrow(elapsedTime, inputs);
 		    	if (!manager_mvmnt_advanced) {
 		    		manager.moveManager(elapsedTime, inputs);
@@ -286,14 +314,12 @@ public class ManagerGame {
 		    		manager.moveManagerAdvanced(elapsedTime, inputs,
 		    				game_screen_width, game_screen_height);
 		    	}
-				
-		    	// fire projectile if necessary
+
 		    	if (keyPressed("SPACE")) {
 		    		projectile_list.fireProjectile(manager.getArrowAngle(),
 							manager_grp.getLayoutX(), manager_grp.getLayoutY());
 		    	}
 
-				// update projectiles
 				projectile_list.updateProjectiles(elapsedTime);
 
 				// update timer
@@ -312,10 +338,12 @@ public class ManagerGame {
     	}
     }
     
+    // return time left in seconds
     private int getSecondsLeft() {
     	return ((int) total_time_left / 1) + 1;
     }
     
+    // update text saying seconds
     private void updateTimerLabel() {
     	int seconds_left = getSecondsLeft();
     	String timer_text =
@@ -323,6 +351,11 @@ public class ManagerGame {
 		timer_label.setText(timer_text);
     }
     
+    /** Keep track of keys that are pressed
+     * Assumptions: keys_being_pressed initialized
+     * Arguments:
+     * Returns:
+     */ 
     private void checkKeysBeingPressed() {
     	int num_keys_being_pressed = keys_being_pressed.size();
     	int current_index = 0;
@@ -339,10 +372,12 @@ public class ManagerGame {
     	}
     }
     
+    // check if key was started to get pressed
     private boolean keyPressed(String key_code) {
     	return inputs.contains(key_code) && !keys_being_pressed.contains(key_code);
     }
     
+    // retrieve image based on file name
     private Image getImage(String file_name) {
 		return new Image(getClass().getClassLoader().getResourceAsStream(file_name));
 	}

@@ -1,3 +1,14 @@
+/** 
+ * 	Purpose: Encompasses all elements of an employee
+ *  
+ *  Assumptions: Employee
+ *  
+ *  Dependencies: None
+ *  
+ * 	Use: Create Employee, put in EmployeeList.  Interact with
+ * 	Employee using corresponding methods
+ */
+
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,6 +31,11 @@ public class Employee {
 	private Rectangle hit_box;
 	private boolean awake;
 	
+	/** Initialize Employee game with game elements
+     * Assumptions: none
+     * Arguments: image for awake and sleeping employee
+     * Returns:
+     */ 
 	public Employee(Image awake_img, Image asleep_img) {
 		employee = new Group();
 		
@@ -43,14 +59,17 @@ public class Employee {
 		hit_box.setY(HIT_BOX_Y_COORD);
 	}
 	
+	// return hit box Rectangle shape
 	public Rectangle getHitBox() {
 		return hit_box;
 	}
 	
+	// return employee Group
 	public Group getEmployee() {
 		return employee;
 	}
 	
+	// Make employee sleep
 	// return true if previously awake
 	public boolean putEmployeeToSleep() {
 		if (!awake)
@@ -60,6 +79,7 @@ public class Employee {
 		return true;
 	}
 	
+	// Wake employee
 	// return true if previously asleep
 	public boolean wakeEmployee() {
 		if (awake)

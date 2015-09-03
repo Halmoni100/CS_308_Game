@@ -1,3 +1,9 @@
+/** Keeps track of all Projectiles
+ * Assumptions: None
+ * Dependencies: Image files exist
+ * Returns:
+ */ 
+
 import java.util.ArrayList;
 
 import javafx.scene.Group;
@@ -12,6 +18,7 @@ public class ProjectileList {
 	private int num_projectiles;
 	private Image projectile_img;
 	
+	// initialize ProjectileList with array list and projectile image
 	public ProjectileList() {
 		projectile_group = new Group();
 		projectiles = new ArrayList<Projectile>();
@@ -31,6 +38,7 @@ public class ProjectileList {
 		return num_projectiles;
 	}
 	
+	// create projectile based on angle, add to projectile list
 	public void fireProjectile(double angle, double manager_x_pos,
 			double manager_y_pos) {
 		Projectile p = new Projectile(angle, manager_x_pos,
@@ -40,6 +48,7 @@ public class ProjectileList {
 		projectile_group.getChildren().add(p.getProjectileCircle());
 	}
 	
+	// removes all projectiles from list and Group
 	public void clearProjectiles() {
 		int current_num_projectiles = num_projectiles;
 		for (int i = 0; i < current_num_projectiles; i++) {
@@ -48,6 +57,8 @@ public class ProjectileList {
 		}	
 	}
 	
+	// move projectiles based on elapsed time,
+	// remove them if they hit edge of play screen
 	public void updateProjectiles(double elapsedTime) {
 		int num_projectiles = projectiles.size();
 		int currentIndex = 0;
@@ -62,6 +73,7 @@ public class ProjectileList {
 		}
 	}
 	
+	// for all employees, check if one collides with projectile(s)
 	public void checkCollisions(EmployeeList employee_list) {
 		int num_employees = employee_list.getNumEmployees();
 		ArrayList<Employee> employees =  employee_list.getEmployees();
@@ -79,6 +91,7 @@ public class ProjectileList {
 		}
 	}
 	
+	// remove projectile from list and Group
 	private void removeProjectile(Projectile p) {
 		projectile_group.getChildren().remove(p.getProjectileCircle());
 		projectiles.remove(p);

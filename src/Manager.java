@@ -1,3 +1,6 @@
+/** Holds all elements of manager, controls manager
+ */ 
+
 import java.util.ArrayList;
 
 import javafx.scene.Group;
@@ -6,9 +9,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
 
 public class Manager {
-	/** this is public so that Projectile as well as
-	 *  ManagerGame (for advanced movement of manager)
-	 *  can use the size of the manager
+	/** this variable is public static so that Projectile 
+	 * as well as ManagerGame (for advanced movement
+	 * of manager) can use the size of the manager
 	 */
 	public static final double MANAGER_GROUP_LENGTH = 150;
 	
@@ -34,6 +37,7 @@ public class Manager {
 	private double arrow_angle;
 	private Rotate arrow_rotate_transform;
 	
+	// initialize Manager elements and parameters
 	public Manager() {
 		Image manager_img = getImage(MANAGER_IMG_FILE_NAME);
 		Image arrow_img = getImage(ARROW_IMG_FILE_NAME);
@@ -69,6 +73,9 @@ public class Manager {
 		return arrow_angle;
 	}
 	
+	/* Takes in keyboard inputs to specify direction,
+	 * Move manager with constant velocity
+	 */
     public void moveManager(double elapsedTime, ArrayList<String> inputs) {
     	double manager_x_pos = manager.getLayoutX();
     	double manager_y_pos = manager.getLayoutY();
@@ -95,6 +102,9 @@ public class Manager {
 		manager.setLayoutY(manager_y_pos + translate_y);
     }
     
+    /* Takes in keyboard inputs to specify acceleration,
+     * moves manager with varying velocity
+     */
     public void moveManagerAdvanced(double elapsedTime,
     		ArrayList<String> inputs, double game_screen_width,
     		double game_screen_height) {
@@ -134,6 +144,7 @@ public class Manager {
 		manager.setLayoutY(manager_y_pos + translate_y);
     }
     
+    // Move arrow CW or CCW based on input
     public void moveArrow(double elapsedTime, ArrayList<String> inputs) {
     	if (!(inputs.contains("LEFT") && inputs.contains("RIGHT"))) {
     		if (inputs.contains("LEFT")) {

@@ -1,3 +1,7 @@
+/** Holds all elements of projectile, including circle shape
+ *  and its velocity
+ */ 
+
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -12,6 +16,8 @@ public class Projectile {
 	private double x_velocity;
 	private double y_velocity;
 	
+	// create Projectile based on angle when shot at,
+	// starts at tip of arrow from Manager
 	public Projectile(double angle, double manager_x_pos, double manager_y_pos,
 			Image projectile_img) {
 		projectile_circle = new Circle(PROJECTILE_RADIUS);
@@ -27,6 +33,7 @@ public class Projectile {
 		return projectile_circle;
 	}
 	
+	// move projectile based on its velocity and elapsed time
 	public boolean updatePos(double elapsedTime) {
 		// return true if at edge
 		double x_pos = projectile_circle.getCenterX();
@@ -43,6 +50,7 @@ public class Projectile {
 		return false;
 	}
 	
+	// check for intersection between employee hit box and projectile
 	public boolean checkHit(Shape hit_box) {
 		Shape intersect = Shape.intersect(hit_box, projectile_circle);
 		if (intersect.getBoundsInLocal().getWidth() != -1)
@@ -50,6 +58,8 @@ public class Projectile {
 		return false;
 	}
 	
+	// positions projectile at tip of arrow from manager,
+	// dependent on MANAGER_GROUP_LENGTH static variable in Manager class
 	private void setInitialPos(double angle, double manager_x_pos,
 			double manager_y_pos) {
 		double l = Manager.MANAGER_GROUP_LENGTH / 2 + PROJECTILE_RADIUS;
@@ -63,6 +73,7 @@ public class Projectile {
 		projectile_circle.setCenterY(init_y_pos);
 	}
 	
+	// convert degrees to radians
 	private double degToRad(double degrees) {
 		return degrees * Math.PI / 180;
 	}
