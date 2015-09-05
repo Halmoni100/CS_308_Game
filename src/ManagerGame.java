@@ -1,3 +1,6 @@
+// This entire file is part of my masterpiece
+// Christopher Hong
+
 /** 
  * 	Purpose: ManagerGame encompass all game rules, mechanics,
  *  and most general elements.
